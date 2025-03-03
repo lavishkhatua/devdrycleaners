@@ -28,16 +28,33 @@ const App = () => {
     alert("Sorry! This Service will be available soon")
   }
   // Handle form submission
-  const handleSubmit = (e) => {
+
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Thanks for reaching out! We'll contact you soon.");
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: ''
-    });
+
+    const text = `New Inquiry:
+    🔹 Name: ${formData.name}
+    📧 Email: ${formData.email}
+    📞 Phone: ${formData.phone}
+    💬 Message: ${formData.message}`;
+
+    const telegramURL = `https://api.telegram.org/bot8077154781:AAGkAqHowRF67PTeoE097XZIY324-5wLZ_w/sendMessage?chat_id=1042425002&text=${encodeURIComponent(text)}`;
+
+    try {
+      await fetch(telegramURL);
+      setSuccessMessage("✅ Your message has been sent! Our team will contact you soon.");
+      
+      // Clear the form after submission
+      setFormData({ name: "", email: "", phone: "", message: "" });
+
+      // Hide success message after 5 seconds
+      setTimeout(() => setSuccessMessage(""), 5000);
+    } catch (error) {
+      setSuccessMessage("❌ Failed to send message. Please try again.");
+    }
   };
+  
   
   // Auto-rotate testimonials
   useEffect(() => {
@@ -203,9 +220,11 @@ const App = () => {
                 <h3 className="text-2xl font-bold mb-2">{services[activeService].title}</h3>
                 <p className="text-gray-600 mb-4">{services[activeService].description}</p>
                 <div className="font-bold text-blue-600 text-xl">{services[activeService].price}</div>
+                <a href="#contact">
                 <button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
                   Book This Service
                 </button>
+                </a>
               </div>
             </div>
             
@@ -395,6 +414,9 @@ const App = () => {
                 >
                   Send Message
                 </button>
+                {successMessage && (
+                  <p className="mt-4 text-green-600 font-medium text-center">{successMessage}</p>
+                )}
               </form>
             </div>
             
