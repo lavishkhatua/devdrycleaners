@@ -39,7 +39,11 @@ const App = () => {
     📞 Phone: ${formData.phone}
     💬 Message: ${formData.message}`;
 
-    const telegramURL = `https://api.telegram.org/bot8077154781:AAGkAqHowRF67PTeoE097XZIY324-5wLZ_w/sendMessage?chat_id=1042425002&text=${encodeURIComponent(text)}`;
+    const botToken = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.REACT_APP_TELEGRAM_CHAT_ID;
+
+
+    const telegramURL = `https://api.telegram.org/${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 
     try {
       await fetch(telegramURL);
