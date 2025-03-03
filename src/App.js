@@ -43,7 +43,7 @@ const App = () => {
     const chatId = process.env.REACT_APP_TELEGRAM_CHAT_ID;
 
 
-    const telegramURL = `https://api.telegram.org/${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+    const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 
     try {
       await fetch(telegramURL);
